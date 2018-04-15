@@ -20,7 +20,6 @@ void pp_box(const char* str){
       for(int i = 0; i < len; ++i)printf("-");
       printf("\n|%s|\n ", str);
       for(int i = 0; i < len; ++i)printf("-");
-      printf("\n");
 }
 
 int main(int argc, char* argv[]){
@@ -37,10 +36,12 @@ int main(int argc, char* argv[]){
             while(getline(&line, &sz, fp) != EOF){
                   if((sub = substr("TODO", line))){
                         if(ln != 0)printf("\n");
-                        printf("%i (%i,%li): %s", nt++, ln, sub-line+1, sub);
+                        printf("%i) (%i,%li): %s", nt++, ln, sub-line+1, sub);
                   }
                   ++ln;
             }
+            if(nt == 1)printf("\nNO TODOs FOUND");
+            printf("\n");
             fclose(fp);
       }
 }
