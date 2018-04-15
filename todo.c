@@ -1,5 +1,4 @@
 #include <string.h>
-#include <stdbool.h>
 #include <stdio.h>
 
 char* substr(const char* substr, char* str){
@@ -25,19 +24,22 @@ void pp_box(const char* str){
 }
 
 int main(int argc, char* argv[]){
-      int ln;
+      int ln, nt;
       for(int i = 1; i < argc; ++i){
+            if(i != 1)printf("\n");
             pp_box(argv[i]);
             FILE* fp = fopen(argv[i], "r");
             char* line = NULL;
             char* sub = NULL;
             size_t sz;
             ssize_t read;
-            ln = 0;
+            nt = ln = 1;
             while(getline(&line, &sz, fp) != EOF){
+                  if((sub = substr("TODO", line))){
+                        if(ln != 0)printf("\n");
+                        printf("%i (%i,%li): %s", nt++, ln, sub-line+1, sub);
+                  }
                   ++ln;
-                  if((sub = substr("TODO", line)))
-                  printf("(%i,%li): %s\n", ln, sub-line+1, sub);
             }
             fclose(fp);
       }
