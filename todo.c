@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 char* substr(const char* substr, char* str){
@@ -25,23 +26,32 @@ void pp_box(const char* str){
 int main(int argc, char* argv[]){
       int ln, nt;
       for(int i = 1; i < argc; ++i){
-            if(i != 1)printf("\n");
-            pp_box(argv[i]);
             FILE* fp = fopen(argv[i], "r");
+            if(fp == NULL){
+                  printf("\nFILE NOT FOUND\n");
+                  continue;
+            }
             char* line = NULL;
             char* sub = NULL;
             size_t sz;
             ssize_t read;
             nt = ln = 1;
-            while(getline(&line, &sz, fp) != EOF){
+            char pr_fn = 0;
+            while((read = getline(&line, &sz, fp)) != EOF){
                   if((sub = substr("TODO", line))){
-                        if(ln != 0)printf("\n");
-                        printf("%i) (%i,%li): %s", nt++, ln, sub-line+1, sub);
+                        if(line[read-1] == '\n')line[read-1] = '\0';
+                        if(!pr_fn){
+                              // TODO decide if there should be a newline after each file
+                              /*if(i != 1)printf("\n");*/
+                              pp_box(argv[i]);
+                              pr_fn = 1;
+                        }
+                        printf("\n%i) (%i,%li): %s", nt++, ln, sub-line+1, sub);
                   }
                   ++ln;
             }
-            if(nt == 1)printf("\nNO TODOs FOUND");
-            printf("\n");
+            free(line);
+            if(nt != 1)printf("\n");
             fclose(fp);
       }
 }
