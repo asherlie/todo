@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 char* substr(const char* substr, char* str){
+      if(str[0] == '\n')return NULL;
       int len = strlen(substr);
       char buf[len+1];
       int i = 0;
@@ -24,11 +25,13 @@ void pp_box(const char* str){
 }
 
 int main(int argc, char* argv[]){
+      unsigned long lc = 0;
+      int found = 0;
       int ln, nt;
       for(int i = 1; i < argc; ++i){
             FILE* fp = fopen(argv[i], "r");
             if(fp == NULL){
-                  printf("\nFILE NOT FOUND\n");
+                  printf("FILE \"%s\" NOT FOUND\n", argv[i]);
                   continue;
             }
             char* line = NULL;
@@ -39,6 +42,7 @@ int main(int argc, char* argv[]){
             char pr_fn = 0;
             while((read = getline(&line, &sz, fp)) != EOF){
                   if((sub = substr("TODO", line))){
+                        ++found;
                         if(line[read-1] == '\n')line[read-1] = '\0';
                         if(!pr_fn){
                               // TODO decide if there should be a newline after each file
@@ -53,5 +57,7 @@ int main(int argc, char* argv[]){
             free(line);
             if(nt != 1)printf("\n");
             fclose(fp);
+            lc += ln;
       }
+      printf("lines parsed: %li\nTODOs found: %i\n", lc, found);
 }
