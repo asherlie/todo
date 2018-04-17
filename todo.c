@@ -2,16 +2,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-char* substr(const char* substr, char* str){
-      if(str[0] == '\n')return NULL;
-      int len = strlen(substr);
+char* substr(const char* sub, char* str){
+      int len = strlen(sub);
       char buf[len+1];
       int i = 0;
       while(str[i+len-1] != '\0'){
             memset(buf, '\0', len);
             memcpy(buf, str+(i++), len);
             buf[len]='\0';
-            if(strcmp(buf, substr) == 0)return str+i-1;
+            if(strcmp(buf, sub) == 0)return str+i-1;
       }
       return NULL;
 }
@@ -36,7 +35,7 @@ int main(int argc, char* argv[]){
             }
             char* line = NULL;
             char* sub = NULL;
-            size_t sz;
+            size_t sz = 0;
             ssize_t read;
             nt = ln = 1;
             char pr_fn = 0;
@@ -53,11 +52,12 @@ int main(int argc, char* argv[]){
                         printf("\n%i) (%i,%li): %s", nt++, ln, sub-line+1, sub);
                   }
                   ++ln;
+                  memset(line, '\0', read);
             }
             free(line);
             if(nt != 1)printf("\n");
             fclose(fp);
             lc += ln;
       }
-      printf("lines parsed: %li\nTODOs found: %i\n", lc, found);
+      printf("lines parsed: %li\nTODOs found: %i\n", lc-1, found);
 }
