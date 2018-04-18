@@ -24,18 +24,21 @@ void pp_box(const char* str){
 }
 
 int main(int argc, char* argv[]){
-      unsigned long lc = 0;
+      long lc = 0;
       int found = 0;
       int ln, nt;
+      int gf = argc-1;
+      char* line = NULL;
+      char* sub = NULL;
+      size_t sz = 0;
       for(int i = 1; i < argc; ++i){
             FILE* fp = fopen(argv[i], "r");
             if(fp == NULL){
                   printf("FILE \"%s\" NOT FOUND\n", argv[i]);
+                  --gf;
                   continue;
             }
-            char* line = NULL;
-            char* sub = NULL;
-            size_t sz = 0;
+            sz = 0;
             ssize_t read;
             nt = ln = 1;
             char pr_fn = 0;
@@ -55,9 +58,11 @@ int main(int argc, char* argv[]){
                   memset(line, '\0', read);
             }
             free(line);
+            line = NULL;
             if(nt != 1)printf("\n");
+            else --gf;
             fclose(fp);
             lc += ln;
       }
-      printf("lines parsed: %li\nTODOs found: %i\n", lc-1, found);
+      printf("\nlines parsed: %li\nfound: %i TODOs in %i files\n", lc-1, found, gf);
 }
