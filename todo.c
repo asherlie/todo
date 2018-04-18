@@ -64,5 +64,5 @@ int main(int argc, char* argv[]){
             fclose(fp);
             lc += ln;
       }
-      printf("\nlines parsed: %li\nfound: %i TODOs in %i files\n", lc-1, found, gf);
+      printf("\nlines parsed: %li\n%i TODOs found in %i files\n", lc-1, found, gf);
 }
