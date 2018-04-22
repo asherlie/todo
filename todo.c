@@ -30,7 +30,7 @@ int main(int argc, char* argv[]){
       int gf = argc-1;
       char* line = NULL;
       char* sub = NULL;
-      size_t sz = 0;
+      size_t sz;
       for(int i = 1; i < argc; ++i){
             FILE* fp = fopen(argv[i], "r");
             if(fp == NULL){
@@ -47,8 +47,6 @@ int main(int argc, char* argv[]){
                         ++found;
                         if(line[read-1] == '\n')line[read-1] = '\0';
                         if(!pr_fn){
-                              // TODO decide if there should be a newline after each file
-                              /*if(i != 1)printf("\n");*/
                               pp_box(argv[i]);
                               pr_fn = 1;
                         }
@@ -64,5 +62,5 @@ int main(int argc, char* argv[]){
             fclose(fp);
             lc += ln;
       }
-      printf("\nlines parsed: %li\n%i TODOs found in %i files\n", lc-1, found, gf);
+      printf("\nparsed %li lines from %i files\n%i TODOs found in %i files\n", lc-1, argc-1, found, gf);
 }
