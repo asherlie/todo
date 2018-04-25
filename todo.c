@@ -2,19 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-char* substr(const char* sub, char* str){
-      int len = strlen(sub);
-      char buf[len+1];
-      int i = 0;
-      while(str[i+len-1] != '\0'){
-            memset(buf, '\0', len);
-            memcpy(buf, str+(i++), len);
-            buf[len]='\0';
-            if(strcmp(buf, sub) == 0)return str+i-1;
-      }
-      return NULL;
-}
-
 void pp_box(const char* str){
       int len = strlen(str);
       printf(" ");
@@ -43,7 +30,7 @@ int main(int argc, char* argv[]){
             nt = ln = 1;
             char pr_fn = 0;
             while((read = getline(&line, &sz, fp)) != EOF){
-                  if((sub = substr("TODO", line))){
+                  if((sub = strstr(line, "TODO"))){
                         ++found;
                         if(line[read-1] == '\n')line[read-1] = '\0';
                         if(!pr_fn){
