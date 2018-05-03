@@ -12,19 +12,19 @@ void pp_box(const char* str){
 
 char** get_args(int* nargs){
       char** args = malloc(sizeof(char*)*100);
-      int sp = 0;
+      // starting at index 1 to be consistent with argv
+      int sp = 1;
       int cap = 100;
-      int len;
-      size_t sz = 0;
+      size_t sz;
+      ssize_t read;
       while(1){
             char* ln = NULL;
             sz = 0;
-            if(getline(&ln, &sz, stdin) == EOF){
+            if((read = getline(&ln, &sz, stdin)) == EOF){
                   free(ln);
                   break;
             }
-            len = strlen(ln);
-            if(ln[len-1] == '\n')ln[len-1] = '\0';
+            if(ln[read-1] == '\n')ln[read-1] = '\0';
             if(sp == cap){
                   cap *= 2;
                   char** tmp = malloc(sizeof(char*)*cap);
