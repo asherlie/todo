@@ -10,7 +10,33 @@ void pp_box(const char* str){
       for(int i = 0; i < len; ++i)printf("-");
 }
 
+char** get_args(int* nargs){
+      size_t sz;
+      char* ln = NULL;
+      char** args = malloc(sizeof(char*)*100);
+      int sp = 0;
+      int cap = 100;
+      ssize_t read;
+      while((read = getline(&ln, &sz, stdin)) != EOF){
+            if(ln[read-1] == '\n')ln[read-1] = '\0';
+            if(sp == cap){
+                  cap *= 2;
+                  char** tmp = malloc(sizeof(char*)*cap);
+                  memcpy(tmp, args, sizeof(char*)*sp);
+                  args = tmp;
+            }
+            args[sp++] = ln;
+      }
+      *nargs = sp;
+      return args;
+}
+
 int main(int argc, char* argv[]){
+      int stdn = 0;
+      if(argc == 2 && strcmp(argv[1], "-stdin") == 0){
+            stdn = 1;
+            argv = get_args(&argc);
+      }
       long lc = 0;
       int found = 0;
       int ln, nt;
@@ -50,4 +76,8 @@ int main(int argc, char* argv[]){
             lc += ln;
       }
       printf("\nparsed %li lines from %i files\n%i TODOs found in %i files\n", lc-1, argc-1, found, gf);
+      if(stdn){
+            for(int i = 0; i < argc; ++i)free(argv[i]);
+            free(argv);
+      }
 }
