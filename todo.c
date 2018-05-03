@@ -11,14 +11,20 @@ void pp_box(const char* str){
 }
 
 char** get_args(int* nargs){
-      size_t sz;
-      char* ln = NULL;
       char** args = malloc(sizeof(char*)*100);
       int sp = 0;
       int cap = 100;
-      ssize_t read;
-      while((read = getline(&ln, &sz, stdin)) != EOF){
-            if(ln[read-1] == '\n')ln[read-1] = '\0';
+      int len;
+      size_t sz = 0;
+      while(1){
+            char* ln = NULL;
+            sz = 0;
+            if(getline(&ln, &sz, stdin) == EOF){
+                  free(ln);
+                  break;
+            }
+            len = strlen(ln);
+            if(ln[len-1] == '\n')ln[len-1] = '\0';
             if(sp == cap){
                   cap *= 2;
                   char** tmp = malloc(sizeof(char*)*cap);
@@ -32,8 +38,8 @@ char** get_args(int* nargs){
 }
 
 int main(int argc, char* argv[]){
-      int stdn = 0;
-      if(argc == 2 && strcmp(argv[1], "-stdin") == 0){
+      char stdn = 0;
+      if(argc == 1){
             stdn = 1;
             argv = get_args(&argc);
       }
