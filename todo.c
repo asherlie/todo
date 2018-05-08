@@ -52,7 +52,7 @@ int main(int argc, char* argv[]){
       size_t sz;
       for(int i = 1; i < argc; ++i){
             FILE* fp = fopen(argv[i], "r");
-            if(fp == NULL){
+            if(!fp){
                   printf("FILE \"%s\" NOT FOUND\n", argv[i]);
                   --gf;
                   continue;
@@ -83,7 +83,8 @@ int main(int argc, char* argv[]){
       }
       printf("\nparsed %li lines from %i files\n%i TODOs found in %i files\n", lc-1, argc-1, found, gf);
       if(stdn){
-            for(int i = 0; i < argc; ++i)free(argv[i]);
+            for(int i = 0; i < argc; ++i)
+                  free(argv[i]);
             free(argv);
       }
 }
