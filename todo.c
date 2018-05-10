@@ -2,6 +2,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define SZ_CUTOFF 100
+
+// returns fs in MB
+int fs(const char* fn){
+      FILE* fp = fopen(fn, "r");
+      fseek(fp, 0L, SEEK_END);
+      int ret = ftell(fp);
+      fclose(fp);
+      return ret/1000000;
+}
+
 void pp_box(const char* str){
       int len = strlen(str);
       printf(" ");
@@ -57,6 +68,7 @@ int main(int argc, char* argv[]){
                   --gf;
                   continue;
             }
+            if(fs(argv[i]) >= SZ_CUTOFF)continue;
             sz = 0;
             ssize_t read;
             nt = ln = 1;
