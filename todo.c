@@ -2,17 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define SZ_CUTOFF 100
-
-// returns fs in MB
-int fs(const char* fn){
-      FILE* fp = fopen(fn, "r");
-      fseek(fp, 0L, SEEK_END);
-      int ret = ftell(fp);
-      fclose(fp);
-      return ret/1000000;
-}
-
 void pp_box(const char* str){
       int len = strlen(str);
       printf(" ");
@@ -24,8 +13,7 @@ void pp_box(const char* str){
 char** get_args(int* nargs){
       char** args = malloc(sizeof(char*)*100);
       // starting at index 1 to be consistent with argv
-      int sp = 1;
-      int cap = 100;
+      int sp = 1, cap = 100;
       size_t sz;
       ssize_t read;
       while(1){
@@ -55,9 +43,7 @@ int main(int argc, char* argv[]){
             argv = get_args(&argc);
       }
       long lc = 0;
-      int found = 0;
-      int ln, nt;
-      int gf = argc-1;
+      int ln, nt, found = 0, gf = argc-1;
       char* line = NULL;
       char* sub = NULL;
       size_t sz;
@@ -68,7 +54,6 @@ int main(int argc, char* argv[]){
                   --gf;
                   continue;
             }
-            if(fs(argv[i]) >= SZ_CUTOFF)continue;
             sz = 0;
             ssize_t read;
             nt = ln = 1;
