@@ -4,10 +4,10 @@
 
 void pp_box(const char* str){
       int len = strlen(str);
-      printf(" ");
-      for(int i = 0; i < len; ++i)printf("-");
+      putchar(' ');
+      for(int i = 0; i < len; ++i)putchar('-');
       printf("\n|%s|\n ", str);
-      for(int i = 0; i < len; ++i)printf("-");
+      for(int i = 0; i < len; ++i)putchar('-');
 }
 
 char** get_args(int* nargs){
@@ -38,7 +38,7 @@ char** get_args(int* nargs){
 }
 
 int main(int argc, char* argv[]){
-      char stdn = 0;
+      _Bool stdn = 0;
       if(argc == 1){
             stdn = 1;
             argv = get_args(&argc);
