@@ -11,13 +11,14 @@ void pp_box(const char* str){
 }
 
 char** get_args(int* nargs){
-      char** args = malloc(sizeof(char*)*100);
       // starting at index 1 to be consistent with argv
       int sp = 1, cap = 100;
+      char** args = malloc(sizeof(char*)*cap);
       size_t sz;
       ssize_t read;
+      char* ln;
       while(1){
-            char* ln = NULL;
+            ln = NULL;
             sz = 0;
             if((read = getline(&ln, &sz, stdin)) == EOF){
                   free(ln);
